@@ -1,0 +1,46 @@
+.btnMore {
+  width: 200px;
+  height: 50px;
+  padding: 10px 25px;
+  color: rgb(112, 118, 123);
+  background: linear-gradient(0deg, #511500, #f5f3f2, #a8a7a7);
+  border: none;
+  box-shadow: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #d0d1f0 15%,
+    #c2c5f8 50%,
+    #abacbc 80%,
+    #eaedf6 90%,
+    transparent 100%
+  );
+  border-radius: 5px;
+  border: 2px solid #fff;
+}
+.btnMore:hover {
+  background: linear-gradient(
+    0deg,
+    #363535 0%,
+    #030bed 15%,
+    #0d0d50 50%,
+    #202ef3 80%,
+    #707277 90%,
+    #13016e 100%
+  );
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #232af7 15%,
+    #3841f4 50%,
+    #0813ab 80%,
+    #013ef6 90%,
+    transparent 100%
+  );
+  color: #ececf6;
+}
+@media screen and (max-width: 425px) {
+  .btnMore {
+    width: 100%;
+  }
+}
