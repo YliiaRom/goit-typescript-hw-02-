@@ -1,25 +1,34 @@
 import axios from "axios";
-import { useState, useEffect, cache } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import "./App.css";
 import { getPhotosFromUnsplash } from "./components/getPhotos";
 import SearchBar from "./components/SearchBar/SearchBar";
-import ImageGallery from "./components/ImageGallery/ImageGallery";
-import Loader from "./components/Loader/Loader";
+
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
-import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
+
 import ImageModal from "./components/ImageModal/ImageModal";
+import { IPhoto } from "./types/photo";
+import { ImageGallery } from "./components/ImageGallery/ImageGallery";
+import { ErrorMessage } from "./components/ErrorMessage/ErrorMessage";
+import { Loader } from "./components/Loader/Loader";
+
+export interface IUnsplashResponse {
+  total: number;
+  total_pages: number;
+  results: IPhoto[];
+}
 
 function App() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [photos, setPhotos] = useState([]);
-  const [query, setQuery] = useState("");
-  const [loader, setLoader] = useState(false);
-  const [visibleBtnMore, setVisibleBtnMore] = useState(false);
-  const [error, setError] = useState(false);
-  const [page, setPage] = useState(1);
-  const [selectedImage, setSelectedImage] = useState("");
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [photos, setPhotos] = useState<IPhoto[]>([]);
+  const [query, setQuery] = useState<string>("");
+  const [loader, setLoader] = useState<boolean>(false);
+  const [visibleBtnMore, setVisibleBtnMore] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [selectedImage, setSelectedImage] = useState<string>("");
 
-  const handleSearchQuery = (valueInput) => {
+  const handleSearchQuery = (valueInput: string): void => {
     if (valueInput.trim() === "") {
       setLoader(true);
       return;
@@ -36,16 +45,17 @@ function App() {
     if (query.split(`/`)[0] === "") {
       return;
     }
-    async function getPhotos() {
+    const getPhotos = async (): Promise<void> => {
       try {
         setError(false);
         setLoader(true);
-        const fetchData = await getPhotosFromUnsplash(
+        const fetchData: IUnsplashResponse = await getPhotosFromUnsplash(
           query.split(`/`)[0],
           page
         );
 
-        const data = fetchData.results;
+        const data: IPhoto[] = fetchData.results;
+
         setPhotos((firstGalleryPhotos) => {
           return [...firstGalleryPhotos, ...data];
         });
@@ -59,15 +69,16 @@ function App() {
       } finally {
         setLoader(false);
       }
-    }
+    };
     getPhotos();
   }, [page, query]);
-  const openModal = (imageUrl) => {
+
+  const openModal = (imageUrl: string): void => {
     setSelectedImage(imageUrl);
     setModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setModalOpen(false);
     setSelectedImage("");
   };
@@ -83,11 +94,17 @@ function App() {
         onClose={closeModal}
         imageUrl={selectedImage}
       >
-        <img src={selectedImage} alt="Selected" style={{ maxWidth: "100%" }} />
+        {selectedImage !== "" && (
+          <img
+            src={selectedImage}
+            alt="Selected"
+            style={{ maxWidth: "100%" }}
+          />
+        )}
       </ImageModal>
 
       {loader && <Loader />}
-      {/* <Loader /> */}
+
       {visibleBtnMore && !loader && (
         <LoadMoreBtn
           onClick={() => {

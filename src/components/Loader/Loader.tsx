@@ -1,6 +1,7 @@
+import React, { FC } from "react";
 import css from "./Loader.module.css";
 import BarLoader from "react-spinners/BarLoader";
-export default function Loader() {
+export const Loader: React.FC = () => {
   return (
     <div className={css.loader}>
       <BarLoader
@@ -15,4 +16,4 @@ export default function Loader() {
       />
     </div>
   );
-}
+};

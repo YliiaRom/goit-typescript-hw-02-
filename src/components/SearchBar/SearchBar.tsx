@@ -1,17 +1,20 @@
-import { useState } from "react";
+import React, { useState, FormEvent, ChangeEvent } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import css from "./SearchBar.module.css";
+interface ISearchBarProps {
+  onSubmit: (query: string) => void;
+}
 
-export default function SearchBar({ onSubmit }) {
-  const [query, setQuery] = useState("");
-  const toastId = "id-toast";
+export default function SearchBar({ onSubmit }: ISearchBarProps) {
+  const [query, setQuery] = useState<string>("");
+  const toastId: string = "id-toast";
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (query.trim() === "") {
-      if (toast.id === "id-toast") {
-        return;
-      }
+      // if (toast.id === "id-toast") {
+      //   return;
+      // }
       toast.success("Please, enter text to search ", {
         id: toastId,
         duration: 2500,
@@ -27,7 +30,7 @@ export default function SearchBar({ onSubmit }) {
 
     setQuery("");
   };
-  const handleInput = (e) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };
 
@@ -64,29 +67,3 @@ export default function SearchBar({ onSubmit }) {
     </>
   );
 }
-// toast("Hello World", {
-//   duration: 4000,
-//   position: "top-center",
-
-//   // Styling
-//   // style: {},
-//   // className: "",
-
-//   // Custom Icon
-//   icon: "👏",
-
-//   // Change colors of success/error/loading icon
-//   iconTheme: {
-//     primary: "#000",
-//     secondary: "#fff",
-//   },
-
-//   // Aria
-//   ariaProps: {
-//     role: "status",
-//     "aria-live": "polite",
-//   },
-
-//   // Additional Configuration
-//   removeDelay: 1000,
-// });
